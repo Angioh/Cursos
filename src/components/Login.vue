@@ -34,22 +34,23 @@ let users = ref([])
 
 
 //Metodos
-const login =  () =>{
-    if(usuario.value === users.value){
+const login =  async () => {
+ const datos = await axios.get('http://localhost:3000/usuarios')
+  users = datos.data
+  users.map((el)=>{
+    if(el.email === usuario.value && el.password===contrasenia.value){
       router.push({path: '/dashboard'})
     }
     else{
+      console.log(el.email)
       alert('Usuario o contraseña incorrecto')
+      
     }
+  })
 
 }
-onMounted(async () => {
- const datos = await axios.get('http://localhost:3000/usuarios')
-  users = datos.data.map((el)=> el.email)
-  console.log(users)
-  console.log(usuario)
- 
-})
+
+
 </script>
 
 <style lang="scss" scoped></style>
